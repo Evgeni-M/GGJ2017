@@ -8,20 +8,9 @@ public class shipController : MonoBehaviour {
 	public Rigidbody rb;
 	public float speed = 10;
 	public Transform CannonBall;
-	public Transform explosion;
-	public Animation anim;
-	public GameObject LB;
-	public GameObject LF;
-	public GameObject RB;
-	public GameObject RF;
-	public GameObject LBsmoke;
-	public GameObject LFsmoke;
-	public GameObject RBsmoke;
-	public GameObject RFsmoke;
 
 	void Start(){
 		rb = GetComponent<Rigidbody> ();
-		anim = this.GetComponent<Animation> ();
 	}
 
 	public void rotateTowards(float x, float y){
@@ -62,20 +51,13 @@ public class shipController : MonoBehaviour {
 	}
 
 	public void moveShip(){
-		anim.Play ("Boyancy");
 		rb.velocity = transform.forward * speed;
 	}
 
 	public void fireLeft(){
-		anim.Play("CannonToLeft");
-		var cb = Instantiate (CannonBall, LB.transform.position, Quaternion.identity).GetComponent<CannonBall>();
+		var cb = Instantiate (CannonBall, this.transform.position, Quaternion.identity).GetComponent<CannonBall>();
 		cb.Direction = Direction.Left;
-		cb.location = Location.Back;
 		cb.Owner = gameObject;
-		var cb2 = Instantiate (CannonBall, LF.transform.position, Quaternion.identity).GetComponent<CannonBall>();
-		cb2.Direction = Direction.Left;
-		cb2.location = Location.Front;
-		cb2.Owner = gameObject;
 
 		//spawn cannon balls on left side of the ship
 		//set angle and velocity
@@ -83,17 +65,9 @@ public class shipController : MonoBehaviour {
 	}
 
 	public void fireRight(){
-		anim ["CannonToLeft"].speed = -1;
-		anim.Play ("CannonToLeft");
-
-		var cb = Instantiate (CannonBall, RF.transform.position, Quaternion.identity).GetComponent<CannonBall>();
+		var cb = Instantiate (CannonBall, this.transform.position, Quaternion.identity).GetComponent<CannonBall>();
 		cb.Direction = Direction.Right;
-		cb.location = Location.Front;
 		cb.Owner = gameObject;
-		var cb2 = Instantiate (CannonBall, RB.transform.position, Quaternion.identity).GetComponent<CannonBall>();
-		cb2.Direction = Direction.Right;
-		cb2.location = Location.Back;
-		cb2.Owner = gameObject;
 		//spawn cannon balls on right side of the ship
 		//set angle and velocity
 		//wont slow down, but slowly drop
@@ -131,10 +105,10 @@ public class shipController : MonoBehaviour {
 	}
 
     void OnCollisionEnter( Collision collision ) {
+        print( "wtf" );
         if (collision.collider.tag == "CannonBall") {
             var cannonBall = collision.gameObject.GetComponent<CannonBall>();
-			print ("hit");
-			Instantiate (explosion, this.transform.position, Quaternion.identity); 
+            print( "hit" );
         }
     }
 }
